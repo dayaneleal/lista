@@ -3,23 +3,23 @@ package com.example.listadecompras.repository
 import android.content.ContentValues
 import android.content.Context
 import com.example.listadecompras.constants.DBConstants
-import com.example.listadecompras.model.ShoppingListModel
+import com.example.listadecompras.model.ItemModel
 
-class ShoppingListRepository private constructor(context: Context) {
+class ListRepository private constructor(context: Context) {
     private val listDatabase = ListDatabase(context)
 
     companion object {
-        private lateinit var repository: ShoppingListRepository
+        private lateinit var repository: ListRepository
 
-        fun getInstance(context: Context): ShoppingListRepository {
+        fun getInstance(context: Context): ListRepository {
             if (!::repository.isInitialized) {
-                repository = ShoppingListRepository(context)
+                repository = ListRepository(context)
             }
             return repository
         }
     }
 
-    fun insert(shoppingList: ShoppingListModel): Boolean {
+    fun insert(shoppingList: ItemModel): Boolean {
         return try {
             val db = listDatabase.writableDatabase
 
@@ -34,9 +34,9 @@ class ShoppingListRepository private constructor(context: Context) {
         }
     }
 
-    fun getAll(): List<ShoppingListModel> {
+    fun getAll(): List<ItemModel> {
 
-        val list = mutableListOf<ShoppingListModel>()
+        val list = mutableListOf<ItemModel>()
 
         try {
             val db = listDatabase.readableDatabase
@@ -67,8 +67,8 @@ class ShoppingListRepository private constructor(context: Context) {
                     val quantity =
                         cursor.getInt(cursor.getColumnIndex(DBConstants.SHOPPING_LIST.COLUMNS.QUANTITY))
 
-                    val item = ShoppingListModel(id, name, quantity)
-                    list.add(ShoppingListModel(id,name,quantity))
+                    val item = ItemModel(id, name, quantity)
+                    list.add(ItemModel(id,name,quantity))
                 }
             }
 
@@ -79,9 +79,9 @@ class ShoppingListRepository private constructor(context: Context) {
         return list
     }
 
-    fun get(id: Int): ShoppingListModel? {
+    fun get(id: Int): ItemModel? {
 
-        var list : ShoppingListModel? = null
+        var list : ItemModel? = null
 
         try {
             val db = listDatabase.readableDatabase
@@ -113,7 +113,7 @@ class ShoppingListRepository private constructor(context: Context) {
                     val quantity =
                         cursor.getInt(cursor.getColumnIndex(DBConstants.SHOPPING_LIST.COLUMNS.QUANTITY))
 
-                    list = ShoppingListModel(id, name, quantity)
+                    list = ItemModel(id, name, quantity)
                 }
             }
 
@@ -122,5 +122,25 @@ class ShoppingListRepository private constructor(context: Context) {
             return list
         }
         return list
+    }
+
+        fun update(item: ItemModel): Boolean {
+
+        return try {
+            val db = listDatabase.writableDatabase
+
+            val values = ContentValues()
+            values.put(DBConstants.SHOPPING_LIST.COLUMNS.ITEM_NAME, item.itemName)
+            values.put(DBConstants.SHOPPING_LIST.COLUMNS.QUANTITY, item.itemQuantity)
+
+            //Esse é o WHERE da Query Update. É o Critério de Seleção.
+            val selection = DBConstants.SHOPPING_LIST.COLUMNS.ID + " = ?"
+            val args = arrayOf(item.id.toString())
+
+            db.update(DBConstants.SHOPPING_LIST.TABLE_NAME, values, selection, args)
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 }
