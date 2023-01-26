@@ -14,7 +14,7 @@ import com.example.listadecompras.viewModel.ListViewModel
 class MainActivity : AppCompatActivity()  {
 
     private lateinit var binding : ActivityMainBinding
-    private val adapter = ListAdapter(::onEditClick)
+    private val adapter = ListAdapter(::onEditClick, ::onEditRemove)
     private lateinit var viewModel: ListViewModel
     private var itemId = 0
 
@@ -61,6 +61,10 @@ class MainActivity : AppCompatActivity()  {
         startActivity(intent)
     }
 
+    fun onEditRemove(id: Int) {
+        viewModel.remove(id)
+        viewModel.getAll()
+    }
 
 
 

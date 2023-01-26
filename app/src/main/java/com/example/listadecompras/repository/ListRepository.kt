@@ -143,4 +143,20 @@ class ListRepository private constructor(context: Context) {
             false
         }
     }
+
+    fun remove(id: Int): Boolean  {
+        return try{
+            val db = listDatabase.writableDatabase
+
+            val selection = DBConstants.SHOPPING_LIST.COLUMNS.ID + " = ?"
+            val args = arrayOf(id.toString())
+
+            db.delete(DBConstants.SHOPPING_LIST.TABLE_NAME,selection, args)
+            true
+
+        }catch (e: Exception) {
+            false
+        }
+
+    }
 }

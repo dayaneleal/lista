@@ -49,4 +49,7 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
         _listItemLiveData.value = repository.getAll()
     }
 
+    fun remove(id: Int){
+        repository.remove(id)
+    }
 }

@@ -7,7 +7,7 @@ import com.example.listadecompras.databinding.RowItemsListBinding
 import com.example.listadecompras.model.ItemModel
 import com.example.listadecompras.view.viewHolder.ListViewHolder
 
-class ListAdapter(val onEditClick: (Int) -> Unit): RecyclerView.Adapter<ListViewHolder>() {
+class ListAdapter(val onEditClick: (Int) -> Unit, val onRemoveClick: (Int) -> Unit): RecyclerView.Adapter<ListViewHolder>() {
     private var shoppingList: List<ItemModel> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
@@ -15,7 +15,7 @@ class ListAdapter(val onEditClick: (Int) -> Unit): RecyclerView.Adapter<ListView
             LayoutInflater.from(parent.context),
             parent,
             false)
-        return ListViewHolder(item, onEditClick)
+        return ListViewHolder(item, onEditClick, onRemoveClick)
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
