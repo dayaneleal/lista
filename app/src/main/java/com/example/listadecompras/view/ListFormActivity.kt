@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.listadecompras.R
 import com.example.listadecompras.constants.DBConstants
@@ -31,6 +32,7 @@ class ListFormActivity : AppCompatActivity(), View.OnClickListener {
         if (actionBar != null){
             actionBar.setDisplayShowTitleEnabled(false)
             actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_chevron))
         }
 
         binding.btnSave.setOnClickListener(this)
